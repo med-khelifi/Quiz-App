@@ -1,0 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:quiz/core/resources/routes/routes_names.dart';
+import 'package:quiz/screens/main/main_screen.dart';
+import 'package:quiz/screens/onboarding/onboarding_screen.dart';
+
+class RoutesManager {
+  static Map<String, WidgetBuilder> routes = {
+    RoutesNames.mainScreen : (context) => MainScreen(),
+    RoutesNames.onboardingScreen : (context) => OnboardingScreen(),
+  };
+}
