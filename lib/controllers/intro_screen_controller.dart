@@ -37,7 +37,7 @@ class IntroScreenController {
     }
   }
   void onSkipPressed() {
-    Navigator.pushReplacementNamed(_context, RoutesNames.mainScreen);
+    Navigator.pushNamedAndRemoveUntil(_context, RoutesNames.loginScreen,(p)=>false);
   }
 
   void onViewPageChanged(int idx) {

@@ -7,6 +7,7 @@ class StringsManager {
   static const String pageViewTitle1 = "Synonyms for QUIZ";
   static const String pageViewTitle2 = "Antonyms of QUIZ";
   static const String pageViewTitle3 = "Cool QUIZ";
+  static const String txtStart = "Start";
 
   static const String pageViewSubtitle1 = "Synonyms for QUIZ";
   static const String pageViewSubtitle2 = "Sunt in culpa qui officia deserunt mollit anim id est laborum";

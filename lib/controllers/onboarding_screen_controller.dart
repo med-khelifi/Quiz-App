@@ -3,6 +3,6 @@ import 'package:quiz/core/resources/routes/routes_names.dart';
 
 class OnboardingScreenController {
   static void onMainButtonPressed(BuildContext context) {
-    Navigator.pushReplacementNamed(context, RoutesNames.introScreen);
+    Navigator.pushNamedAndRemoveUntil(context, RoutesNames.introScreen,(p)=> false);
   }
 }
