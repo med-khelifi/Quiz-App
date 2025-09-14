@@ -30,7 +30,7 @@ class IntroScreenController {
     _currentIndex++;
     if (_currentIndex < viewPageCount()) {
       pageViewSink.add(_currentIndex);
-      _pageController.animateToPage(_currentIndex, duration: Duration(seconds: 1), curve: Curves. linear);
+      _pageController.animateToPage(_currentIndex, duration: Duration(microseconds: 400), curve: Curves. linear);
     } else {
       _currentIndex = 0;
       onSkipPressed();
@@ -42,7 +42,7 @@ class IntroScreenController {
 
   void onViewPageChanged(int idx) {
     pageViewSink.add(idx);
-    _pageController.animateToPage(idx, duration: Duration(seconds: 1), curve: Curves.linear);
+    _pageController.jumpToPage(idx);
     _currentIndex = idx;
   }
 

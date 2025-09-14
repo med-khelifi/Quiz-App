@@ -12,4 +12,7 @@ class StringsManager {
   static const String pageViewSubtitle1 = "Synonyms for QUIZ";
   static const String pageViewSubtitle2 = "Sunt in culpa qui officia deserunt mollit anim id est laborum";
   static const String pageViewSubtitle3 = "Culpa qui officia deserunt mollit anim id est laborum";
+
+  static const String txtPlayerName = "Player Name";
+  static const String txtEnterYourName = "Enter your name";
 }

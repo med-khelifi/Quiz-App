@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:quiz/controllers/login_screen_controller.dart';
 import 'package:quiz/core/resources/colors/colors_manager.dart';
 import 'package:quiz/core/resources/images/images_manager.dart';
 import 'package:quiz/core/resources/strings/strings_manager.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late LoginScreenController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = LoginScreenController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +41,9 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Q",
+                  StringsManager.txtQ,
                   style: TextStyle(
+                    height: 1.2,
                     fontSize: 200,
                     color: ColorsManager.mainColor,
                     fontWeight: FontWeight.w400,
@@ -34,7 +53,7 @@ class LoginScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Player name",
+                      StringsManager.txtPlayerName,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -42,29 +61,48 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(
-                            color: ColorsManager.mainColor,
-                            width: 2,
-                          ),
+                    Form(
+                      key: _controller.loginFormKey,
+                      child: TextFormField(
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: ColorsManager.mainColor,
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(
-                            color: ColorsManager.mainColor,
-                            width: 2,
+                        validator: _controller.validateNameField,
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                            fontSize: 12,
+                            color: ColorsManager.redColor,
+                            fontWeight: FontWeight.w600,
                           ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: ColorsManager.mainColor,
+                              width: 2,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: ColorsManager.mainColor,
+                              width: 2,
+                            ),
+                          ),
+                          hintStyle: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: ColorsManager.mainColor,
+                          ),
+                          hintText: StringsManager.txtEnterYourName,
                         ),
-                        hintText: "Enter your name",
                       ),
                     ),
                   ],
                 ),
                 MaterialButton(
-                  onPressed: () => {},
+                  onPressed: () => _controller.onLoginButtonPressed(context),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
