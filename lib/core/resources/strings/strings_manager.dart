@@ -15,4 +15,5 @@ class StringsManager {
 
   static const String txtPlayerName = "Player Name";
   static const String txtEnterYourName = "Enter your name";
+  static const String txtPrevious = "Previous";
 }

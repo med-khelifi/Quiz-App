@@ -3,6 +3,7 @@ import 'package:quiz/controllers/login_screen_controller.dart';
 import 'package:quiz/core/resources/colors/colors_manager.dart';
 import 'package:quiz/core/resources/images/images_manager.dart';
 import 'package:quiz/core/resources/strings/strings_manager.dart';
+import 'package:quiz/screens/login/widgets/custom_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -64,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Form(
                       key: _controller.loginFormKey,
                       child: TextFormField(
+                        controller: _controller.inputFormController,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -101,22 +103,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-                MaterialButton(
+                CustomButton(
+                  label: StringsManager.txtStart,
                   onPressed: () => _controller.onLoginButtonPressed(context),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  height: 60,
-                  color: ColorsManager.mainColor,
-                  minWidth: double.infinity,
-                  child: Text(
-                    StringsManager.txtStart,
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
-                      color: ColorsManager.whiteColor,
-                    ),
-                  ),
                 ),
               ],
             ),
