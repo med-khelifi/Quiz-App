@@ -7,11 +7,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
     required this.questionsCount,
-    required this.currentQuestionIndex,
+    required this.currentQuestionStream,
     required this.onPreviousTap,
   });
   final int questionsCount;
-  final int currentQuestionIndex;
+  final Stream<int> currentQuestionStream;
   final VoidCallback onPreviousTap;
   @override
   Widget build(BuildContext context) {
@@ -19,17 +19,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: ColorsManager.mainScreenBackgroundColor,
       title: Padding(
         padding: const EdgeInsets.only(top: 10),
-        child: Text(
-          "${currentQuestionIndex + 1}/$questionsCount",
-          style: GoogleFonts.baloo2(
-            fontSize: 22,
-            fontWeight: FontWeight.w700,
-            color: ColorsManager.blackColor,
-          ),
+        child: StreamBuilder<int>(
+          stream: currentQuestionStream,
+          builder: (context, asyncSnapshot) {
+            return Text(
+              "${asyncSnapshot.data == null ? 0 : asyncSnapshot.data!}/$questionsCount",
+              style: GoogleFonts.baloo2(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: ColorsManager.blackColor,
+              ),
+            );
+          }
         ),
       ),
       centerTitle: true,
-      leadingWidth: 200,
+      leadingWidth: 119,
       leading: Padding(
         padding: const EdgeInsets.only(left: 23, top: 10),
         child: InkWell(

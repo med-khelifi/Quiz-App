@@ -7,12 +7,16 @@ class CustomQuestionSection extends StatelessWidget {
   const CustomQuestionSection({
     super.key,
     required this.questionText,
-    required this.centerText,
-    required this.percentValue,
+    required this.durationStream,
+    required this.percentDuration,
+    required this.onAnimationEnd,
+    required this.percentValueStream,
   });
   final String questionText;
-  final String centerText;
-  final double percentValue;
+  final Stream<int> durationStream;
+  final Stream<double> percentValueStream;
+  final int percentDuration;
+  final VoidCallback onAnimationEnd;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -25,15 +29,16 @@ class CustomQuestionSection extends StatelessWidget {
           elevation: 4,
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              vertical: 100,
+              // vertical: 70,
               horizontal: 16.0,
             ),
             child: SizedBox(
               width: double.infinity,
-              //height: 230,
+              height: 230,
               child: Center(
                 child: Text(
                   questionText,
+                  textAlign: TextAlign.center,
                   style: GoogleFonts.baloo2(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -49,8 +54,9 @@ class CustomQuestionSection extends StatelessWidget {
           right: 0,
           top: -42,
           child: CustomCircularPercentIndicator(
-            percent: percentValue,
-            centerText: centerText,
+            percent: percentDuration,
+            durationStream: durationStream,
+            percentValueStream: percentValueStream,
           ),
         ),
       ],

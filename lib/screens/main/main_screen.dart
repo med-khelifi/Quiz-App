@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quiz/controllers/main_screen_controller.dart';
+import 'package:quiz/core/Models/question.dart';
 import 'package:quiz/core/resources/colors/colors_manager.dart';
 import 'package:quiz/core/resources/strings/strings_manager.dart';
 import 'package:quiz/screens/login/widgets/custom_button.dart';
@@ -14,36 +16,69 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late MainScreenController _controller;
+  late Question question;
+  @override
+  void initState() {
+    super.initState();
+    _controller = MainScreenController(count: 20);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _controller.startQuiz();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsManager.mainScreenBackgroundColor,
       appBar: CustomAppBar(
-        questionsCount: -4,
-        currentQuestionIndex: -7,
+        questionsCount: _controller.questionsCount,
         onPreviousTap: () {},
+        currentQuestionStream: _controller.currentQuestionIndexStream,
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 60, right: 25, left: 25),
-        child: CustomButton(onPressed: () {}, label: StringsManager.txtNext),
+        child: CustomButton(
+          onPressed: _controller.onNextButtonPressed,
+          label: StringsManager.txtNext,
+        ),
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 60),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              CustomQuestionSection(
-                questionText: '',
-                centerText: '',
-                percentValue: 0.0,
-              ),
-              AnswersSection(
-                answers: [],
-                onOptionClicked: () {},
-                currentSelectedIndex: 0,
-              ),
-            ],
+          child: StreamBuilder<Question>(
+            stream: _controller.questionStream,
+            builder: (context, asyncSnapshot) {
+              if (asyncSnapshot.data == null) {
+                question = Question(
+                  question: '',
+                  answers: [],
+                  correctAnswerIndex: 0,
+                );
+              } else {
+                question = asyncSnapshot.data!;
+              }
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CustomQuestionSection(
+                    questionText: question.question,
+                    percentDuration: 30_000,
+                    durationStream: _controller.counterStream,
+                    onAnimationEnd: () {},
+                    percentValueStream: _controller.percentStream,
+                  ),
+                  AnswersSection(
+                    answers: question.answers,
+                    onOptionClicked: _controller.onOptionSelected,
+                    selectedIndexStream: _controller.selectedIndexStream,
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
