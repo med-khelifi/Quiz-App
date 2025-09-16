@@ -4,8 +4,15 @@ import 'package:quiz/core/resources/colors/colors_manager.dart';
 import 'package:quiz/core/resources/strings/strings_manager.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
-
+  const CustomAppBar({
+    super.key,
+    required this.questionsCount,
+    required this.currentQuestionIndex,
+    required this.onPreviousTap,
+  });
+  final int questionsCount;
+  final int currentQuestionIndex;
+  final VoidCallback onPreviousTap;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -13,7 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Padding(
         padding: const EdgeInsets.only(top: 10),
         child: Text(
-          "7/10",
+          "${currentQuestionIndex + 1}/$questionsCount",
           style: GoogleFonts.baloo2(
             fontSize: 22,
             fontWeight: FontWeight.w700,
@@ -25,24 +32,27 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leadingWidth: 200,
       leading: Padding(
         padding: const EdgeInsets.only(left: 23, top: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const Icon(
-              Icons.arrow_back_ios,
-              color: ColorsManager.mainColor,
-              size: 24,
-            ),
-            Text(
-              StringsManager.txtPrevious,
-              style: GoogleFonts.baloo2(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
+        child: InkWell(
+          onTap: onPreviousTap,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const Icon(
+                Icons.arrow_back_ios,
                 color: ColorsManager.mainColor,
+                size: 24,
               ),
-            ),
-          ],
+              Text(
+                StringsManager.txtPrevious,
+                style: GoogleFonts.baloo2(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: ColorsManager.mainColor,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
