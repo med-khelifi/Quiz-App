@@ -9,12 +9,10 @@ class QuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        fontFamily: "Montserrat"
-      ),
+      theme: ThemeData(fontFamily: "Montserrat"),
       home: OnboardingScreen(),
       routes: RoutesManager.routes,
-      initialRoute: RoutesNames.onboardingScreen,
+      initialRoute: RoutesNames.answerScreen,
     );
   }
 }
