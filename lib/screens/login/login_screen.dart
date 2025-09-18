@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = LoginScreenController();
+    _controller = LoginScreenController(context);
   }
 
   @override
@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 CustomButton(
                   label: StringsManager.txtStart,
-                  onPressed: () => _controller.onLoginButtonPressed(context),
+                  onPressed:_controller.onLoginButtonPressed,
                 ),
               ],
             ),

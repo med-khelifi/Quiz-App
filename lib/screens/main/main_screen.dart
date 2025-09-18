@@ -21,13 +21,14 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = MainScreenController(count: 20);
+    _controller = MainScreenController(questionsCount: 4,context: context);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _controller.startQuiz();
+    String name = ModalRoute.of(context)!.settings.arguments as String;
+    _controller.startQuiz(playerName: name);
   }
 
   @override

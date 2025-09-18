@@ -12,7 +12,7 @@ class QuizApp extends StatelessWidget {
       theme: ThemeData(fontFamily: "Montserrat"),
       home: OnboardingScreen(),
       routes: RoutesManager.routes,
-      initialRoute: RoutesNames.answerScreen,
+      initialRoute: RoutesNames.loginScreen,
     );
   }
 }

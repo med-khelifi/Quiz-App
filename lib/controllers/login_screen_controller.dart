@@ -6,8 +6,9 @@ class LoginScreenController {
   late final TextEditingController _inputFormController;
   GlobalKey<FormState> get loginFormKey => _loginFormKey;
   TextEditingController get inputFormController => _inputFormController;
-
-  LoginScreenController() {
+  late BuildContext _context;
+  LoginScreenController(BuildContext context) {
+    _context = context;
     _inputFormController = TextEditingController();
     _loginFormKey = GlobalKey<FormState>();
   }
@@ -20,10 +21,10 @@ class LoginScreenController {
     return null;
   }
 
-  void onLoginButtonPressed(BuildContext context) {
+  void onLoginButtonPressed() {
     if (_loginFormKey.currentState?.validate() ?? false) {
       Navigator.pushNamed(
-        context,
+        _context,
         arguments: _inputFormController.text,
         RoutesNames.mainScreen,
       );

@@ -8,4 +8,8 @@ class ColorsManager {
   static const Color redColor = Color(0xffff0000) ;
   static const Color percentColor = Color(0xff004643) ;
   static const Color mainScreenBackgroundColor = Color(0xffEFF0F3) ;
+  static const Color correctAnswerColor = Color(0xFF35AC05);
+  static const Color wongAnswerColor = Color(0xffff0000) ;
+  
+
 }
