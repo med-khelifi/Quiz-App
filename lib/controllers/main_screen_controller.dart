@@ -9,7 +9,7 @@ import 'package:quiz/data/question%20data/quuestion_data.dart';
 class MainScreenController {
   late BuildContext _context;
   Timer? _timer;
-  int _timeCounterValue = 10;
+  int _timeCounterValue = 30;
   late String _playerName;
   late int? _selectedAnswerIndex;
   late int currentQuestionIndex;
@@ -43,7 +43,10 @@ class MainScreenController {
   late Sink<Question> _questionSink;
   get questionStream => _questionStream;
 
-  MainScreenController({required BuildContext context, int questionsCount = 10}) {
+  MainScreenController({
+    required BuildContext context,
+    int questionsCount = 10,
+  }) {
     _questionsCount = questionsCount;
     _context = context;
     _counterStreamController = StreamController();
@@ -105,55 +108,44 @@ class MainScreenController {
       }
     });
   }
-void onNextButtonPressed() {
-  _timer?.cancel();
 
-  // Safety check
-  if (currentQuestionIndex < 0 || currentQuestionIndex >= questionsList.length) {
-    goToAnswerScreen();
-    return;
+  void onNextButtonPressed() {
+    _timer?.cancel();
+
+    if (questionsList.isEmpty || currentQuestionIndex >= questionsList.length) {
+      goToAnswerScreen();
+      return;
+    }
+
+    int questionIndex = currentQuestionIndex;
+    int correctIndex = questionsList[questionIndex].correctAnswerIndex;
+
+    bool isSkipped = _selectedAnswerIndex == -1;
+    _resultAnswers.add(
+      QuestionAnswerResult(
+        questionNumber: questionIndex + 1,
+        question: questionsList[questionIndex].question,
+        isCorrect: isSkipped ? false : correctIndex == _selectedAnswerIndex,
+        correctAnswer: questionsList[questionIndex].answers[correctIndex],
+        wrongAnswer: isSkipped
+            ? "You skip this question"
+            : questionsList[questionIndex].answers[_selectedAnswerIndex!],
+      ),
+    );
+
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < _questionsCount &&
+        currentQuestionIndex < questionsList.length) {
+      _selectedAnswerIndex = -1;
+      _selectedIndexSink.add(_selectedAnswerIndex!);
+      _currentQuestionIndexSink.add(currentQuestionIndex + 1);
+      _questionSink.add(questionsList[currentQuestionIndex]);
+      restartCounter();
+    } else {
+      goToAnswerScreen();
+    }
   }
-
-  final question = questionsList[currentQuestionIndex];
-  final int correctIndex = question.correctAnswerIndex;
-
-  bool isCorrect = _selectedAnswerIndex != null && _selectedAnswerIndex == correctIndex;
-
-  String correctAnswerText =
-      (correctIndex >= 0 && correctIndex < question.answers.length)
-          ? question.answers[correctIndex]
-          : "Invalid correct answer";
-
-  String selectedAnswerText = (_selectedAnswerIndex != null &&
-          _selectedAnswerIndex! >= 0 &&
-          _selectedAnswerIndex! < question.answers.length)
-      ? question.answers[_selectedAnswerIndex!]
-      : "You skipped this question";
-
-  _resultAnswers.add(
-    QuestionAnswerResult(
-      questionNumber: currentQuestionIndex + 1,
-      question: question.question,
-      isCorrect: isCorrect,
-      correctAnswer: correctAnswerText,
-      wrongAnswer: selectedAnswerText,
-    ),
-  );
-
-  // Next question
-  currentQuestionIndex++;
-
-  if (currentQuestionIndex < _questionsCount && currentQuestionIndex < questionsList.length) {
-    _selectedAnswerIndex = null;
-    _questionSink.add(questionsList[currentQuestionIndex]);
-    _selectedIndexSink.add(-1); // UI = nothing selected
-    _currentQuestionIndexSink.add(currentQuestionIndex + 1);
-    restartCounter();
-  } else {
-    goToAnswerScreen();
-  }
-}
-
 
   List<Question> getQuestionsList() {
     // Make a copy of the original list to avoid mutating it directly
@@ -166,10 +158,17 @@ void onNextButtonPressed() {
   }
 
   void goToAnswerScreen() {
+    int correctAnswers = _resultAnswers.where((q) => q.isCorrect).length;
+    double grade = correctAnswers / _resultAnswers.length * 100;
     Navigator.pushNamed(
       _context,
       RoutesNames.answerScreen,
-      arguments: {"name": _playerName, "list": _resultAnswers},
+      arguments: {
+        "name": _playerName,
+        "list": _resultAnswers,
+        "grade": grade,
+        "correctAnswers": correctAnswers,
+      },
     );
   }
 
@@ -179,5 +178,9 @@ void onNextButtonPressed() {
     _percentStreamController.close();
     _counterStreamController.close();
     _questionStreamController.close();
+  }
+
+  void onPreviousButtonTapped() {
+    Navigator.canPop(_context);
   }
 }

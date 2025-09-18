@@ -3,9 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz/core/resources/colors/colors_manager.dart';
 
 class InformationLabel extends StatelessWidget {
-  const InformationLabel({super.key, required this.name, required this.grade});
+  const InformationLabel({super.key, required this.name, required this.grade, required this.correctAnswers});
   final String name;
-  final String grade;
+  final double grade;
+  final int correctAnswers;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -15,7 +16,6 @@ class InformationLabel extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 18),
         child: SizedBox(
           width: double.infinity,
-          height: 100,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +37,16 @@ class InformationLabel extends StatelessWidget {
                   fontSize: 22,
                   fontWeight: FontWeight.w500,
                   color: ColorsManager.mainColor,
-                  wordSpacing: 30,
+                  
+                ),
+              ),
+              Text(
+                "correct Answers : $correctAnswers",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.montserrat(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
+                  color: ColorsManager.mainColor,
                 ),
               ),
             ],

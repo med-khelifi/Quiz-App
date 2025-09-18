@@ -21,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = MainScreenController(questionsCount: 4,context: context);
+    _controller = MainScreenController(questionsCount: 4, context: context);
   }
 
   @override
@@ -37,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: ColorsManager.mainScreenBackgroundColor,
       appBar: CustomAppBar(
         questionsCount: _controller.questionsCount,
-        onPreviousTap: () {},
+        onPreviousTap: _controller.onPreviousButtonTapped,
         currentQuestionStream: _controller.currentQuestionIndexStream,
       ),
       bottomNavigationBar: Padding(
@@ -48,38 +48,38 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 60),
-          child: StreamBuilder<Question>(
-            stream: _controller.questionStream,
-            builder: (context, asyncSnapshot) {
-              if (asyncSnapshot.data == null) {
-                question = Question(
-                  question: '',
-                  answers: [],
-                  correctAnswerIndex: 0,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 60),
+            child: StreamBuilder<Question>(
+              stream: _controller.questionStream,
+              builder: (context, asyncSnapshot) {
+                if (asyncSnapshot.data == null) {
+                  question = Question(
+                    question: '',
+                    answers: [],
+                    correctAnswerIndex: 0,
+                  );
+                } else {
+                  question = asyncSnapshot.data!;
+                }
+                return Column(
+                  children: [
+                    CustomQuestionSection(
+                      questionText: question.question,
+                      durationStream: _controller.counterStream,
+                      percentValueStream: _controller.percentStream,
+                    ),
+                    SizedBox(height: 30),
+                    AnswersSection(
+                      answers: question.answers,
+                      onOptionClicked: _controller.onOptionSelected,
+                      selectedIndexStream: _controller.selectedIndexStream,
+                    ),
+                  ],
                 );
-              } else {
-                question = asyncSnapshot.data!;
-              }
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CustomQuestionSection(
-                    questionText: question.question,
-                    percentDuration: 30_000,
-                    durationStream: _controller.counterStream,
-                    onAnimationEnd: () {},
-                    percentValueStream: _controller.percentStream,
-                  ),
-                  AnswersSection(
-                    answers: question.answers,
-                    onOptionClicked: _controller.onOptionSelected,
-                    selectedIndexStream: _controller.selectedIndexStream,
-                  ),
-                ],
-              );
-            },
+              },
+            ),
           ),
         ),
       ),

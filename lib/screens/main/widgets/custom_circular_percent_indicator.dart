@@ -6,11 +6,9 @@ import 'package:quiz/core/resources/colors/colors_manager.dart';
 class CustomCircularPercentIndicator extends StatelessWidget {
   const CustomCircularPercentIndicator({
     super.key,
-    required this.percent,
     required this.durationStream,
     required this.percentValueStream,
   });
-  final int percent;
   final Stream<int> durationStream;
   final Stream<double> percentValueStream;
   @override
@@ -19,12 +17,9 @@ class CustomCircularPercentIndicator extends StatelessWidget {
       stream: percentValueStream,
       builder: (context, asyncSnapshot) {
         return CircularPercentIndicator(
-          animation: !true,
-          animationDuration: percent,
           radius: 43,
           lineWidth: 8,
           percent: asyncSnapshot.data == null ? 0 : asyncSnapshot.data!,
-          restartAnimation: true,
           center: StreamBuilder<int>(
             stream: durationStream,
             builder: (context, asyncSnapshot) {

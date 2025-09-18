@@ -18,19 +18,24 @@ class _AnswerScreenState extends State<AnswerScreen> {
     super.didChangeDependencies();
     _answers = ModalRoute.of(context)!.settings.arguments as Map;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsManager.mainColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 10,right: 10, top: 15),
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                InformationLabel(name: _answers["name"] ,grade: '3   /   5',),
-                const SizedBox(height: 15,),
-                AnswersList(answers:_answers["list"],),
+                InformationLabel(
+                  name: _answers["name"],
+                  grade: _answers["grade"],
+                  correctAnswers: _answers["correctAnswers"],
+                ),
+                const SizedBox(height: 15),
+                AnswersList(answers: _answers["list"]),
               ],
             ),
           ),
@@ -40,12 +45,3 @@ class _AnswerScreenState extends State<AnswerScreen> {
   }
 }
 
-/*
- arguments: {
-        "name": _playerName,
-        "list": _resultAnswers,
-        "grade": grade,
-        "correctCount": correctCount,
-        "total": questionsCount,
-      },
-*/

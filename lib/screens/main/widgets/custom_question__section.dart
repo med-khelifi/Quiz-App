@@ -8,15 +8,12 @@ class CustomQuestionSection extends StatelessWidget {
     super.key,
     required this.questionText,
     required this.durationStream,
-    required this.percentDuration,
-    required this.onAnimationEnd,
     required this.percentValueStream,
   });
   final String questionText;
   final Stream<int> durationStream;
   final Stream<double> percentValueStream;
-  final int percentDuration;
-  final VoidCallback onAnimationEnd;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -54,7 +51,6 @@ class CustomQuestionSection extends StatelessWidget {
           right: 0,
           top: -42,
           child: CustomCircularPercentIndicator(
-            percent: percentDuration,
             durationStream: durationStream,
             percentValueStream: percentValueStream,
           ),

@@ -11,7 +11,7 @@ class AnswersList extends StatelessWidget {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) => AnswerListItem(
-        isCorrect: index.isEven,
+        isCorrect: answers[index].isCorrect,
         questionText: answers[index].question,
         correctAnswer: answers[index].correctAnswer,
         wrongAnswer: answers[index].wrongAnswer,
